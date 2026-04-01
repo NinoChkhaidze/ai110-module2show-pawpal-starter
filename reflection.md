@@ -40,8 +40,7 @@ method: generate_scheduler, explain_reasoning()
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+The scheduler considers task priority (high/medium/low) and the owner's available time window. Priority came first because a pet care app needs to guarantee the most important tasks always get scheduled before lower-priority ones like grooming. Time budget came second to handle real-world limits — not every task fits in a day.
 
 **b. Tradeoffs**
 
@@ -55,13 +54,15 @@ This tradeoff is reasonable for a pet care app because the priority ordering alr
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+Claude gave suggestions based on my actual code. I used it to spot missing methods, draft test cases, and understand unfamiliar code like `itertools.combinations` before adding it. 
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+Copilot suggested storing available hours as strings like `"08:00"`. I didn't go with that because the scheduler needs to do arithmetic - adding durations, checking time budgets - and strings would make that messy.
+
+**c. Separate chat sessions per phase**
+
+Starting a new chat for each phase kept things focused. 
 
 ---
 
@@ -69,26 +70,22 @@ This tradeoff is reasonable for a pet care app because the priority ordering alr
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
-
+I tested sorting, recurrence, and conflict detection (overlapping tasks get flagged, sequential ones don't). These mattered most because they're the three behaviors the owner actually relies on.
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
-
+4 out of 5. The core logic is covered and I trust it works as designed. 
 ---
 
 ## 5. Reflection
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+The conflict detection came together cleanly. Using `itertools.combinations` to check every pair of tasks was simple and easy to test — I was happy with how little code it took to do something that feels complex.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+I'd redesign the UI to let owners mark tasks complete directly in the app.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+AI is most useful when you give it something concrete and direct to react to. I learned to ask specific questions like "what's missing from this class?".

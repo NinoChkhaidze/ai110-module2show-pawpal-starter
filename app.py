@@ -54,10 +54,17 @@ if st.button("Add task"):
 # --- Task list ---
 pending = owner.pet.get_pending_tasks()
 if pending:
-    st.markdown("**Current tasks:**")
+    _preview_scheduler = Scheduler(owner)
+    sorted_pending = _preview_scheduler.sort_by_time(pending)
+    st.markdown("**Current tasks (sorted by start time):**")
     st.table([
-        {"title": t.title, "duration (min)": t.duration_minutes, "priority": t.priority}
-        for t in pending
+        {
+            "Task": t.title,
+            "Start": t.start_time if t.start_time else "—",
+            "Duration (min)": t.duration_minutes,
+            "Priority": t.priority.capitalize(),
+        }
+        for t in sorted_pending
     ])
 else:
     st.info("No tasks yet. Add one above.")
@@ -73,5 +80,38 @@ if st.button("Generate schedule"):
         st.warning("Add at least one task before generating a schedule.")
     else:
         scheduler = Scheduler(owner)
-        scheduler.generate_schedule()
-        st.code(scheduler.explain_plan())
+        scheduled = scheduler.generate_schedule()
+
+        # --- Conflict warnings (shown first so owner sees them immediately) ---
+        conflicts = scheduler.detect_conflicts()
+        if conflicts:
+            st.error("⚠️ Schedule conflicts detected — two or more tasks overlap in time. Please adjust start times or durations.")
+            for warning in conflicts:
+                # Extract the two task names for a plain-English message
+                st.warning(warning)
+
+        # --- Scheduled tasks table ---
+        if scheduled:
+            st.success(f"Schedule ready — {len(scheduled)} task(s) fit in your time window.")
+            sorted_scheduled = scheduler.sort_by_time(scheduled)
+            st.table([
+                {
+                    "Start": t.start_time,
+                    "Task": t.title,
+                    "Duration (min)": t.duration_minutes,
+                    "Priority": t.priority.capitalize(),
+                }
+                for t in sorted_scheduled
+            ])
+
+        # --- Skipped tasks ---
+        if scheduler.skipped_tasks:
+            st.warning(f"{len(scheduler.skipped_tasks)} task(s) didn't fit in today's window and were skipped.")
+            st.table([
+                {
+                    "Task": t.title,
+                    "Duration (min)": t.duration_minutes,
+                    "Priority": t.priority.capitalize(),
+                }
+                for t in scheduler.skipped_tasks
+            ])
