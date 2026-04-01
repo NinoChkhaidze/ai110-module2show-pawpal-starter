@@ -12,7 +12,23 @@
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
----
+## 1. add a pet - the owner registers a pet, its name and what species it is
+## 2. add a care task - add a task to a pet, like 
+## "feed, 30 minutes, high priority"
+
+## 3. generate today's schedule - the owner sets how many hours they have available, and the code will generate the to do list for the day based on the tasks their priorities and how much time it takes
+
+
+Owner:
+attribute: name, available_start, available_end
+methods: add_task(), get_all_tasks()
+
+task:
+attribute: title, duration, priority, is_complete
+method: mark_complete
+
+scheduler:
+method: generate_scheduler, explain_reasoning()
 
 ## 2. Scheduling Logic and Tradeoffs
 
