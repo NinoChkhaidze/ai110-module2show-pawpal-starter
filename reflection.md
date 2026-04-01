@@ -7,16 +7,22 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
-**b. Design changes**
-
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
-
 ## 1. add a pet - the owner registers a pet, its name and what species it is
 ## 2. add a care task - add a task to a pet, like 
 ## "feed, 30 minutes, high priority"
 
 ## 3. generate today's schedule - the owner sets how many hours they have available, and the code will generate the to do list for the day based on the tasks their priorities and how much time it takes
+
+**b. Design changes**
+
+- Did your design change during implementation?
+- If yes, describe at least one change and why you made it.
+
+Three changes were made after reviewing the initial skeleton:
+
+1. **`available_start` and `available_end` changed from 'str' to 'int' - Originally stored as strings like "08:00", but the Scheduler needs to do arithmetic to get a time budget. Storing them as minutes since midnight makes that it easier.
+
+2. **`Scheduler` gained `scheduled_tasks` and `skipped_tasks` lists** — `explain_plan()` needs to know which tasks were chosen and which were left out
 
 
 Owner:
