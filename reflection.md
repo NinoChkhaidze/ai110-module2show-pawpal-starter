@@ -45,8 +45,9 @@ method: generate_scheduler, explain_reasoning()
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+The scheduler uses the followingg algorithm: it sorts tasks by priority (in case the priority is the same then sorted by duration) and schedules each one as long as it fits in the remaining time budget
+
+This tradeoff is reasonable for a pet care app because the priority ordering already reflects what matters most to the owner, and the greedy approach is fast, predictable, and easy to explain — the owner can see exactly why each task was included or skipped.
 
 ---
 

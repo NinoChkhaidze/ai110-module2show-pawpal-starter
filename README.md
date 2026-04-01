@@ -22,6 +22,18 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+Beyond basic task listing, `pawpal_system.py` includes four algorithmic features:
+
+- **Priority + duration sorting** — tasks are ordered by priority (high → low), then by shortest duration first within the same priority
+
+- **Chronological start times** — the scheduler walks a clock forward and stamps each task with a real `HH:MM` start time; manually pre-assigned times 
+
+- **Recurring tasks** — tasks can be marked `"daily"` or `"weekly"`. Calling `pet.complete_task()` marks it done and automatically appends the next occurrence with an updated due date using Python's `timedelta`.
+
+- **Conflict detection** — `scheduler.detect_conflicts()` checks every pair of scheduled tasks for time overlaps using `itertools.combinations` 
+
 ## Getting started
 
 ### Setup
@@ -41,3 +53,21 @@ pip install -r requirements.txt
 5. Add tests to verify key behaviors.
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
+
+## Testing PawPal+
+
+### Run the tests
+
+```bash
+python -m pytest tests/test_pawpal.py -v
+```
+
+### What the tests cover
+
+- **Sorting** — I am testing whether tasks with assigned start times are returned in chronological order
+- **Recurrence** — I am testing whether completing a daily task automatically adds a new task due the next day
+- **Conflict detection** — I am testing whether two overlapping tasks get flagged with a warning,
+
+### Confidence Level: 4 / 5 stars
+
+The core scheduling logic is covered. Missing one star because generate_schedule() has no tests yet.
